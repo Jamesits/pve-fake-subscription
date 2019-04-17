@@ -22,7 +22,7 @@ shared_key_data = "kjfdlskfhiuewhfk947368"
 server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
 subscription_file = "/etc/subscription"
 
-def get_timestamp():
+def get_timestamp() -> int:
     return int(time.time())
 
 # perl's md5_base64 implementation

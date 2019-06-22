@@ -3,5 +3,5 @@ Description=Fake a Proxmox VE subscription
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/pve-fake-subscription
+ExecStart=/usr/bin/pve-fake-subscription
 

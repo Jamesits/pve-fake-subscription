@@ -1,5 +1,4 @@
 *.deb
-!usr/lib/*
 
 # Created by https://www.gitignore.io/api/macos,python,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=macos,python,windows,visualstudiocode
@@ -49,7 +48,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+#lib/
 lib64/
 parts/
 sdist/

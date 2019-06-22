@@ -1,0 +1,13 @@
+[Unit]
+Description=Refresh fake Proxmox VE subscription cache every day
+
+[Timer]
+OnActiveSec=0s
+OnBootSec=0s
+OnCalendar=daily
+RandomizedDelaySec=60s
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

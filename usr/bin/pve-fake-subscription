@@ -10,7 +10,7 @@ import re
 import sys
 from typing import List
 
-# a 8-socket fake key which should be good for all situations
+# an 8-socket fake key which should be good for all situations
 key = "pve8p-1145141919"
 
 # key format

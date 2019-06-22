@@ -1,4 +1,4 @@
-I am really poor and I really can't buy a license. I just want to get rid of the annoying dialog on every login.
+I am really poor and I really can't afford a license. I just want to get rid of the annoying dialog on every login.
 
 ## Installation
 

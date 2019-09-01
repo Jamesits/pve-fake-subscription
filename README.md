@@ -10,4 +10,24 @@ I am really poor and I really can't afford a license. I just want to get rid of 
 ## Installation
 
 * Go to [release](https://github.com/Jamesits/pve-fake-subscription/releases/latest) to download the latest release
-* Run `dpkg -i pve-fake-subscription_*.deb` on every Proxmox VE node
+* Run `dpkg -i pve-fake-subscription_*.deb` as root on every Proxmox VE node
+
+## Uninstallation
+
+Run everything as root:
+
+```shell
+apt purge pve-fake-subscription
+rm /etc/subscription
+```
+
+## Building the Package
+
+Run everything as root on a Debian 10 system:
+
+```shell
+apt-get install ruby ruby-dev rubygems build-essential
+gem install --no-ri --no-rdoc fpm
+./package.sh
+```
+

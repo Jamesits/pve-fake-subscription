@@ -5,7 +5,7 @@ I am really poor and I really can't afford a license. I just want to get rid of 
 * Works for any version >=5 (we've tested this from 5.3 to 6.0 without any changes in the code)
 * Non-intrusive, no changes to any system file, persists between system updates
 * Comes with standard Debian package, easy to manage and automate
-* You can uninstall at any time (you might need to wait a week for the cache to be invalidated)
+* You can uninstall at any time (you might need to wait a week for the cache to be invalidated because of https://github.com/jordansissel/fpm/issues/1472 )
 
 ## Installation
 

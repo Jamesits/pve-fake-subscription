@@ -1,1 +1,2 @@
-rm /etc/subscription
+!rm /etc/subscription
+!rm /etc/pmg/subscription

@@ -8,20 +8,12 @@ import json
 import time
 import re
 import sys
+import os
 from typing import List
-
-# an 8-socket fake key which should be good for all situations
-key = "pve8p-1145141919"
-
-# key format
-# /usr/share/perl5/PVE/API2/Subscription.pm
-subscription_pattern = r'pve([1248])([cbsp])-[0-9a-f]{10}'
 
 # /usr/share/perl5/PVE/Subscription.pm
 shared_key_data = "kjfdlskfhiuewhfk947368"
-
 server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
-subscription_file = "/etc/subscription"
 
 def get_timestamp() -> int:
     return int(time.time())
@@ -50,9 +42,10 @@ def generate_subscription(key: str, server_ids: List[str]) -> str:
 
     return key + "\n" + csum + "\n" + data + "\n"
 
-if __name__ == "__main__":
+# key_pattern can be find in /usr/share/perl5/{PVE,PMG}/API2/Subscription.pm
+def activate(key: str, key_pattern: str, subscription_file: str) -> None:
     # check if the key format is correct
-    pattern = re.compile(subscription_pattern)
+    pattern = re.compile(key_pattern)
     if not pattern.match(key):
         print("key format error", file=sys.stderr)
         sys.exit(1)
@@ -69,3 +62,13 @@ if __name__ == "__main__":
     with open(subscription_file, "w") as f:
         f.write(subscription)
 
+if __name__ == "__main__":
+    # Proxmox VE
+    if os.path.exists("/etc/pve"):
+        print("Activating Proxmox VE...")
+        activate("pve8p-1145141919", r'pve([1248])([cbsp])-[0-9a-f]{10}', "/etc/subscription")
+
+    # Proxmox Mail Gateway
+    if os.path.exists("/etc/pmg"):
+        print("Activating Proxmox Mail Gateway...")
+        activate("pmgp-1145141919", r'pmg([cbsp])-[0-9a-f]{10}', "/etc/pmg/subscription")

@@ -11,7 +11,8 @@ import sys
 import os
 from typing import List
 
-# /usr/share/perl5/PVE/Subscription.pm
+# PVE & PMG: /usr/share/perl5/PVE/Subscription.pm
+# PBS: /usr/lib/x86_64-linux-gnu/proxmox-backup/*
 shared_key_data = "kjfdlskfhiuewhfk947368"
 server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
 
@@ -28,7 +29,7 @@ def generate_server_id(key: str) -> str:
 def generate_subscription(key: str, server_ids: List[str]) -> str:
     localinfo = {
         "checktime": get_timestamp(),
-        "status": "Active",
+        "status": "Active", # PBS: `new`, `notfound`, `active`, `invalid`
         "key": key,
         "validdirectory": ",".join(server_ids),
         "productname": "YajuuSenpai",
@@ -72,3 +73,8 @@ if __name__ == "__main__":
     if os.path.exists("/etc/pmg"):
         print("Activating Proxmox Mail Gateway...")
         activate("pmgp-1145141919", r'pmg([cbsp])-[0-9a-f]{10}', "/etc/pmg/subscription")
+    
+    # Proxmox Backup Server (not working yet)
+    if os.path.exists("/etc/proxmox-backup"):
+        print("Activating Proxmox Backup Server...")
+        activate("pmgp-1145141919", r'pmg([cbsp])-[0-9a-f]{10}', "/etc/proxmox-backup/subscription")

@@ -19,9 +19,13 @@ server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
 def get_timestamp() -> int:
     return int(time.time())
 
-# perl's md5_base64 implementation
-def md5_base64(x: str) -> str: 
-    return base64.b64encode(hashlib.md5(x.encode()).digest()).strip(b'=')
+# Perl's md5_base64_perl implementation
+def md5_base64_perl(x: str) -> str: 
+    return base64.b64encode(hashlib.md5(x.encode()).digest()).strip(b'=').decode()
+
+# Rust's `base64::encode(tools::md5sum("something")?);`
+def md5_base64_rs(x: str) -> str: 
+    return base64.b64encode(hashlib.md5(x.encode()).digest()).decode()
 
 def generate_server_id(key: str) -> str:
     return hashlib.md5(key.encode()).hexdigest().upper()
@@ -39,7 +43,7 @@ def generate_subscription_pve_pmg(key: str, server_ids: List[str]) -> str:
 
     data = base64.standard_b64encode(json.dumps(localinfo).encode()).decode()
     cat = str(localinfo["checktime"]) + data + "\n" + shared_key_data
-    csum = md5_base64(cat).decode()
+    csum = md5_base64_perl(cat)
 
     return key + "\n" + csum + "\n" + data + "\n"
 
@@ -79,8 +83,8 @@ def generate_subscription_pbs(key: str, server_ids: List[str]) -> str:
     }
 
     data = base64.standard_b64encode(json.dumps(localinfo).encode()).decode()
-    cat = str(localinfo["checktime"]) + data + "\n" + shared_key_data
-    csum = md5_base64(cat).decode()
+    cat = str(localinfo["checktime"]) + data + shared_key_data
+    csum = md5_base64_rs(cat)
 
     return key + "\n" + csum + "\n" + data + "\n"
 

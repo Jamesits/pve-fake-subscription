@@ -15,6 +15,7 @@ I am really poor and I really can't afford a license. I just want to get rid of 
 
 * Go to [release](https://github.com/Jamesits/pve-fake-subscription/releases/latest) to download the latest release
 * Run `dpkg -i pve-fake-subscription_*.deb` as root on every Proxmox VE node
+* (Optional) `echo "127.0.0.1 shop.maurer-it.com" | sudo tee -a /etc/hosts` to prevent fake keys being sent to the Proxmox servers
 
 ## Uninstallation
 

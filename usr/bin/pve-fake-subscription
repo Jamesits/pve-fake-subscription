@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-# Pollute Proxmox VE 5.x subscription cache so it won't alert you on dashboard login
-# If you need to prevent it checking keys against a server, please block "shop.maurer-it.com"
+# Pollute Proxmox software subscription cache so it won't alert you on dashboard login
+# Should be scheduled to run every few hours with a timer to prevent cache from expiring
+# If you need to prevent it checking keys against a server, please block "shop.maurer-it.com" in your hosts file
 import hashlib
 import base64
 import json

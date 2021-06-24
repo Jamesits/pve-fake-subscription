@@ -10,6 +10,7 @@ import re
 import sys
 import os
 from typing import List
+from datetime import datetime, timedelta
 
 # PVE & PMG: /usr/share/perl5/PVE/Subscription.pm
 # PBS: /usr/lib/x86_64-linux-gnu/proxmox-backup/*
@@ -75,10 +76,10 @@ def generate_subscription_pbs(key: str, server_ids: List[str]) -> str:
         "serverid": ",".join(server_ids),
         "checktime": get_timestamp(),
         "key": key,
-        "message": "haha",
+        "message": "Yajuu Senpai has got your back",
         "productname": "YajuuSenpai",
-        "regdate": "2020-09-19 00:00:00",
-        "nextduedate": "2021-09-19",
+        "regdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "nextduedate": (datetime.now() + timedelta(seconds=1296000)).strftime("%Y-%m-%d"), # 1296000: MAX_LOCAL_KEY_AGE in src/tools/subscription.rs
         "url": "https://github.com/Jamesits/pve-fake-subscription",
     }
 

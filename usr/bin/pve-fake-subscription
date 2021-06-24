@@ -92,7 +92,7 @@ def activate_pbs(key: str, subscription_file: str) -> None:
         server_id = generate_server_id(f.read())
 
     # generate a license file
-    subscription = generate_subscription_pve_pmg(key, [server_id])
+    subscription = generate_subscription_pbs(key, [server_id])
 
     # write license file
     with open(subscription_file, "w") as f:

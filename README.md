@@ -2,12 +2,14 @@ I am really poor and I really can't afford a license. I just want to get rid of 
 
 ## Features
 
-* Works for any version >=5 (we've tested this from 5.3 to 6.0 without any changes in the code)
-* Supports Proxmox VE and Proxmox Mail Gateway
+* Works for:
+    - Proxmox VE (5.x or later, tested up to 7.0)
+    - Proxmox Mail Gateway (5.x or later)
+    - Proxmox Backup Server (1.x)
 * Non-intrusive, no changes to any system file, persists between system updates
 * Comes with standard Debian package, easy to manage and automate
 * You can uninstall at any time, hassle-free
-* **No JavaScript**
+* **No JavaScript is involved** in the whole process
 
 ## Installation
 

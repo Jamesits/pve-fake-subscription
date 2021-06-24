@@ -13,14 +13,14 @@ from typing import List
 from datetime import datetime, timedelta
 
 # PVE & PMG: /usr/share/perl5/PVE/Subscription.pm
-# PBS: /usr/lib/x86_64-linux-gnu/proxmox-backup/*
+# PBS: /usr/lib/x86_64-linux-gnu/proxmox-backup/* (source code at `https://git.proxmox.com/git/proxmox-backup.git`)
 shared_key_data = "kjfdlskfhiuewhfk947368"
 server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
 
 def get_timestamp() -> int:
     return int(time.time())
 
-# Perl's md5_base64_perl implementation
+# Perl's md5_base64 implementation
 def md5_base64_perl(x: str) -> str: 
     return base64.b64encode(hashlib.md5(x.encode()).digest()).strip(b'=').decode()
 
@@ -89,7 +89,7 @@ def generate_subscription_pbs(key: str, server_ids: List[str]) -> str:
 
     return key + "\n" + csum + "\n" + data + "\n"
 
-# key_pattern can be find in src/tools/subscription.rs
+# Key pattern: pbst-xxxxxxxxxx
 def activate_pbs(key: str, subscription_file: str) -> None:
     # get machine ID
     server_id = ""

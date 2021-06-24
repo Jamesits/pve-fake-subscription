@@ -26,7 +26,7 @@ def md5_base64(x: str) -> str:
 def generate_server_id(key: str) -> str:
     return hashlib.md5(key.encode()).hexdigest().upper()
 
-def generate_subscription(key: str, server_ids: List[str]) -> str:
+def generate_subscription_pve_pmg(key: str, server_ids: List[str]) -> str:
     localinfo = {
         "checktime": get_timestamp(),
         "status": "Active", # PBS: `new`, `notfound`, `active`, `invalid`
@@ -44,12 +44,14 @@ def generate_subscription(key: str, server_ids: List[str]) -> str:
     return key + "\n" + csum + "\n" + data + "\n"
 
 # key_pattern can be find in /usr/share/perl5/{PVE,PMG}/API2/Subscription.pm
-def activate(key: str, key_pattern: str, subscription_file: str) -> None:
+# PVE: r'pve([1248])([cbsp])-[0-9a-f]{10}'
+# PMG: r'pmg([cbsp])-[0-9a-f]{10}'
+def activate_pve_pmg(key: str, subscription_file: str) -> None:
     # check if the key format is correct
-    pattern = re.compile(key_pattern)
-    if not pattern.match(key):
-        print("key format error", file=sys.stderr)
-        sys.exit(1)
+    # pattern = re.compile(key_pattern)
+    # if not pattern.match(key):
+    #     print("key format error", file=sys.stderr)
+    #     sys.exit(1)
 
     # get machine ID
     server_id = ""
@@ -57,7 +59,40 @@ def activate(key: str, key_pattern: str, subscription_file: str) -> None:
         server_id = generate_server_id(f.read())
 
     # generate a license file
-    subscription = generate_subscription(key, [server_id])
+    subscription = generate_subscription_pve_pmg(key, [server_id])
+
+    # write license file
+    with open(subscription_file, "w") as f:
+        f.write(subscription)
+
+def generate_subscription_pbs(key: str, server_ids: List[str]) -> str:
+    localinfo = {
+        "status": "active", # PBS: `new`, `notfound`, `active`, `invalid`
+        "serverid": ",".join(server_ids),
+        "checktime": get_timestamp(),
+        "key": key,
+        "message": "haha",
+        "productname": "YajuuSenpai",
+        "regdate": "2020-09-19 00:00:00",
+        "nextduedate": "2021-09-19",
+        "url": "https://github.com/Jamesits/pve-fake-subscription",
+    }
+
+    data = base64.standard_b64encode(json.dumps(localinfo).encode()).decode()
+    cat = str(localinfo["checktime"]) + data + "\n" + shared_key_data
+    csum = md5_base64(cat).decode()
+
+    return key + "\n" + csum + "\n" + data + "\n"
+
+# key_pattern can be find in src/tools/subscription.rs
+def activate_pbs(key: str, subscription_file: str) -> None:
+    # get machine ID
+    server_id = ""
+    with open(server_key_file, "r") as f:
+        server_id = generate_server_id(f.read())
+
+    # generate a license file
+    subscription = generate_subscription_pve_pmg(key, [server_id])
 
     # write license file
     with open(subscription_file, "w") as f:
@@ -67,14 +102,14 @@ if __name__ == "__main__":
     # Proxmox VE
     if os.path.exists("/etc/pve"):
         print("Activating Proxmox VE...")
-        activate("pve8p-1145141919", r'pve([1248])([cbsp])-[0-9a-f]{10}', "/etc/subscription")
+        activate_pve_pmg("pve8p-1145141919", "/etc/subscription")
 
     # Proxmox Mail Gateway
     if os.path.exists("/etc/pmg"):
         print("Activating Proxmox Mail Gateway...")
-        activate("pmgp-1145141919", r'pmg([cbsp])-[0-9a-f]{10}', "/etc/pmg/subscription")
+        activate_pve_pmg("pmgp-1145141919", "/etc/pmg/subscription")
     
     # Proxmox Backup Server (not working yet)
     if os.path.exists("/etc/proxmox-backup"):
         print("Activating Proxmox Backup Server...")
-        activate("pmgp-1145141919", r'pmg([cbsp])-[0-9a-f]{10}', "/etc/proxmox-backup/subscription")
+        activate_pbs("pbst-1145141919", "/etc/proxmox-backup/subscription")

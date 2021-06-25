@@ -27,9 +27,9 @@ Notes:
 The initial run will be scheduled within 1 minute of the installation. If you don't want to wait, you can invoke it immediately by executing `pve-fake-subscription`.
 
 The fake subscription status doesn't grant you free access to the enterprise repository. You should switch to the no-subscription repository if not already done. Use the following method:
-- [PVE](https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_no_subscription_repo)
-- [PMG](https://pmg.proxmox.com/pmg-docs/pmg-admin-guide.html#pmg_package_repositories)
-- [PBS](https://pbs.proxmox.com/docs/installation.html#proxmox-backup-no-subscription-repository)
+- [Proxmox VE (PVE)](https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_no_subscription_repo)
+- [Proxmox Mail Gateway (PMG)](https://pmg.proxmox.com/pmg-docs/pmg-admin-guide.html#pmg_package_repositories)
+- [Proxmox Backup Server (PBS)](https://pbs.proxmox.com/docs/installation.html#proxmox-backup-no-subscription-repository)
 
 ## Uninstallation
 

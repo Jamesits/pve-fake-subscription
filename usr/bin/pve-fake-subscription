@@ -115,7 +115,7 @@ if __name__ == "__main__":
         print("Activating Proxmox Mail Gateway...")
         activate_pve_pmg("pmgp-1145141919", "/etc/pmg/subscription")
     
-    # Proxmox Backup Server (not working yet)
+    # Proxmox Backup Server
     if os.path.exists("/etc/proxmox-backup"):
         print("Activating Proxmox Backup Server...")
         activate_pbs("pbst-1145141919", "/etc/proxmox-backup/subscription")

@@ -35,7 +35,7 @@ def generate_server_id(key: str) -> str:
 def generate_subscription_pve_pmg(key: str, server_ids: List[str]) -> str:
     localinfo = {
         "checktime": get_timestamp(),
-        "status": "Active", # PBS: `new`, `notfound`, `active`, `invalid`
+        "status": "Active",
         "key": key,
         "validdirectory": ",".join(server_ids),
         "productname": "YajuuSenpai",

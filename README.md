@@ -5,7 +5,7 @@ Disables the "No valid subscription" dialog on all Proxmox products.
 ## Features
 
 Works for:
-- Proxmox VE (5.x or later, tested up to 7.0)
+- Proxmox VE (5.x or later, tested up to 7.2)
 - Proxmox Mail Gateway (5.x or later)
 - Proxmox Backup Server (1.x)
 
@@ -26,7 +26,7 @@ Notes:
 
 The initial run will be scheduled within 1 minute of the installation. If you don't want to wait, you can invoke it immediately by executing `pve-fake-subscription`.
 
-After installation, please refrain yourself from clicking the "check" button on the "Subscription" page. It will invalidate the cache and temporary revert your instance into an unlicensed status. 
+After installation, please refrain yourself from clicking the "check" button on the "Subscription" page. It will invalidate the cache and temporary revert your instance into an unlicensed status.
 
 The fake subscription status doesn't grant you free access to the enterprise repository. You should switch to the no-subscription repository if not already done. Use the following method:
 - [Proxmox VE (PVE)](https://pve.proxmox.com/wiki/Package_Repositories#sysadmin_no_subscription_repo)
@@ -49,6 +49,6 @@ Run everything as root on a Debian 10 system:
 
 ```shell
 apt-get install ruby ruby-dev rubygems build-essential
-gem install --no-ri --no-rdoc fpm
+gem install fpm
 ./package.sh
 ```

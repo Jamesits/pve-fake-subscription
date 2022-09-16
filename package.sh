@@ -1,12 +1,12 @@
 #!/bin/bash
-
-cd "$( dirname "${BASH_SOURCE[0]}" )"
+set -Eeuo pipefail
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit 1
 
 fpm -s dir -t deb --force \
 	-n pve-fake-subscription \
 	--description "Pollute the subscription cache of Proxmox VE (>=5.0), Proxmox Mail Gateway (>=5.0) & Proxmox Backup Server (>=1.0) so it won't alert you on dashboard login" \
 	--url "https://github.com/Jamesits/pve-fake-subscription" \
-	-v 0.0.7 \
+	-v 0.0.8 \
 	--license "GLWTS(Good Luck With That Shit) Public License" \
 	--depends "python3" \
 	--architecture all \

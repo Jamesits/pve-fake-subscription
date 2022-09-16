@@ -22,15 +22,18 @@ def get_timestamp() -> int:
     return int(time.time())
 
 # Perl's md5_base64 implementation
-def md5_base64_perl(x: str) -> str: 
+def md5_base64_perl(x: str) -> str:
     return base64.b64encode(hashlib.md5(x.encode()).digest()).strip(b'=').decode()
 
 # Rust's `base64::encode(tools::md5sum("something")?);`
-def md5_base64_rs(x: str) -> str: 
+def md5_base64_rs(x: str) -> str:
     return base64.b64encode(hashlib.md5(x.encode()).digest()).decode()
 
 def generate_server_id(key: str) -> str:
     return hashlib.md5(key.encode()).hexdigest().upper()
+
+def dt_string(format: str, offset_secs: int = 0) -> str:
+    return (datetime.now() + timedelta(seconds=offset_secs)).strftime(format)
 
 def generate_subscription_pve_pmg(key: str, server_ids: List[str]) -> str:
     localinfo = {
@@ -39,8 +42,8 @@ def generate_subscription_pve_pmg(key: str, server_ids: List[str]) -> str:
         "key": key,
         "validdirectory": ",".join(server_ids),
         "productname": "YajuuSenpai",
-        "regdate": get_timestamp(),
-        "nextduedate": 2147483647,
+        "regdate": dt_string("%Y-%m-%d %H:%M:%S"),
+        "nextduedate": dt_string("%Y-%m-%d", 1296000),
     }
 
     data = base64.standard_b64encode(json.dumps(localinfo).encode()).decode()
@@ -79,8 +82,8 @@ def generate_subscription_pbs(key: str, server_ids: List[str]) -> str:
         "key": key,
         "message": "Yajuu Senpai has got your back",
         "productname": "YajuuSenpai",
-        "regdate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "nextduedate": (datetime.now() + timedelta(seconds=1296000)).strftime("%Y-%m-%d"), # 1296000: MAX_LOCAL_KEY_AGE in src/tools/subscription.rs
+        "regdate": dt_string("%Y-%m-%d %H:%M:%S"),
+        "nextduedate": dt_string("%Y-%m-%d", 1296000), # 1296000: MAX_LOCAL_KEY_AGE in src/tools/subscription.rs
         "url": "https://github.com/Jamesits/pve-fake-subscription",
     }
 
@@ -114,7 +117,7 @@ if __name__ == "__main__":
     if os.path.exists("/etc/pmg"):
         print("Activating Proxmox Mail Gateway...")
         activate_pve_pmg("pmgp-1145141919", "/etc/pmg/subscription")
-    
+
     # Proxmox Backup Server
     if os.path.exists("/etc/proxmox-backup"):
         print("Activating Proxmox Backup Server...")

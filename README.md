@@ -22,15 +22,13 @@ Highlights:
 - Comes with standard Debian package, easy to manage and automate
 - **No JavaScript is involved** in the whole process, as I believe JavaScript is harmful to developers
 
-## Installation
+## Installation / Usage
 
 1. [Download the latest release](https://github.com/Jamesits/pve-fake-subscription/releases/latest)
 1. Install: run `dpkg -i pve-fake-subscription_*.deb` as root on every node
 1. (Optional) `echo "127.0.0.1 shop.maurer-it.com" | sudo tee -a /etc/hosts` to prevent fake keys from being checked against the Proxmox servers
 
 Notes:
-
-The initial run will be scheduled within 1 minute of the installation. If you don't want to wait, you can invoke it immediately by executing `pve-fake-subscription`.
 
 After installation, please refrain yourself from clicking the "check" button on the "Subscription" page. It will invalidate the cache and temporary revert your instance into an unlicensed status.
 

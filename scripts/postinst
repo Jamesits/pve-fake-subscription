@@ -1,0 +1,48 @@
+#!/bin/sh
+
+after_upgrade() {
+    :
+
+    systemctl --system daemon-reload >/dev/null || true
+    debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
+    if ! systemctl is-enabled pve-fake-subscription.timer >/dev/null
+    then
+    : # Ensure this if-clause is not empty. If it were empty, and we had an 'else', then it is an error in shell syntax
+        systemctl preset pve-fake-subscription.timer >/dev/null || true
+        $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+    else
+        $debsystemctl restart pve-fake-subscription.timer >/dev/null || true
+    fi
+
+    pve-fake-subscription
+}
+
+after_install() {
+    :
+
+    systemctl --system daemon-reload >/dev/null || true
+    debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
+    systemctl preset pve-fake-subscription.timer >/dev/null || true
+    $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+
+    pve-fake-subscription
+}
+
+if { [ "${1}" = "configure" ] && [ -z "${2}" ]; } || [ "${1}" = "abort-remove" ]; then
+    # "after install" here
+    # "abort-remove" happens when the pre-removal script failed.
+    #   In that case, this script, which should be idemptoent, is run
+    #   to ensure a clean roll-back of the removal.
+    after_install
+elif [ "${1}" = "configure" ] && [ -n "${2}" ]; then
+    upgradeFromVersion="${2}"
+    # "after upgrade" here
+    # NOTE: This slot is also used when deb packages are removed,
+    # but their config files aren't, but a newer version of the
+    # package is installed later, called "Config-Files" state.
+    # basically, that still looks a _lot_ like an upgrade to me.
+    after_upgrade "${2}"
+elif echo "${1}" | grep -E -q "(abort|fail)"; then
+    echo "Failed to install before the post-installation script was run." >&2
+    exit 1
+fi

@@ -1,3 +1,0 @@
-rm -f /etc/subscription
-rm -f /etc/pmg/subscription
-rm -f /etc/proxmox-backup/subscription

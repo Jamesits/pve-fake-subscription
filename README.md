@@ -1,5 +1,7 @@
 # pve-fake-subscription
 
+![JavaScript free](https://img.shields.io/badge/JavaScript-free-%09%23f7df1e "No JavaScript is involved in this project. ")
+
 Disables the "No valid subscription" dialog on all Proxmox products.
 
 > I am really poor and I can't afford a license. I just want to get rid of the annoying dialog.

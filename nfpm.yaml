@@ -8,7 +8,7 @@ version_metadata: "git"
 epoch: 0
 release: 1
 section: "admin"
-priority: "optinal"
+priority: "optional"
 
 maintainer: "Nobody <nobody@example.com>"
 

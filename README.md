@@ -10,9 +10,9 @@ Disables the "No valid subscription" dialog on all Proxmox products.
 
 Works for:
 
-- Proxmox VE (5.x or later, tested up to 8.x)
+- Proxmox VE (5.x or later)
 - Proxmox Mail Gateway (5.x or later)
-- Proxmox Backup Server (1.x)
+- Proxmox Backup Server (1.x or later)
 
 Highlights:
 

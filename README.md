@@ -10,7 +10,7 @@ Disables the "No valid subscription" dialog on all Proxmox products.
 
 Works for:
 
-- Proxmox VE (5.x or later; 3.x and 4.x [require some manual actions](#compatibility-for-old-proxmox-ve-versions))
+- Proxmox VE (5.x or later; 3.x and 4.x [require some manual actions](#compatibility-information-for-old-proxmox-ve-versions))
 - Proxmox Mail Gateway (5.x or later)
 - Proxmox Backup Server (1.x or later)
 
@@ -60,7 +60,7 @@ Install [nFPM](https://nfpm.goreleaser.com/install/), then:
 ./package.sh
 ```
 
-### Compatibility for Old Proxmox VE Versions
+### Compatibility Information for Old Proxmox VE Versions
 
 #### PVE 4.x
 

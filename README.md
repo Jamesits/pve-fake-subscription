@@ -22,7 +22,9 @@ Highlights:
 - Comes with standard Debian package, easy to manage and automate
 - **No JavaScript is involved** in the whole process, as I believe JavaScript is harmful to developers
 
-## Installation / Usage
+## Usage
+
+### Installation
 
 1. [Download the latest release](https://github.com/Jamesits/pve-fake-subscription/releases/latest)
 1. Install: run `dpkg -i pve-fake-subscription_*.deb` as root on every node
@@ -38,7 +40,7 @@ The fake subscription status doesn't grant you free access to the enterprise rep
 - [Proxmox Mail Gateway (PMG)](https://pmg.proxmox.com/pmg-docs/pmg-admin-guide.html#pmg_package_repositories)
 - [Proxmox Backup Server (PBS)](https://pbs.proxmox.com/docs/installation.html#proxmox-backup-no-subscription-repository)
 
-## Uninstallation
+### Uninstallation
 
 Run as root:
 
@@ -48,10 +50,45 @@ apt purge pve-fake-subscription
 
 This will revert your system to a "no subscription key" status.
 
-## Building the Package
+## Development Notes
+
+### Building the Package
 
 Install [nFPM](https://nfpm.goreleaser.com/install/), then:
 
 ```shell
 ./package.sh
+```
+
+### Compatibility for Old Proxmox VE Versions
+
+#### PVE 4.x
+
+PVE 4.x is supported with minor changes to the script.
+
+Changes needed:
+- License key needs to be changed from `pve8p` to `pve4p`
+
+#### PVE 3.x
+
+PVE 3.x is supported with minor changes to the script.
+
+Changes needed:
+- The script's hashbang need to be changed from `#!/usr/bin/env python3` to `#!/usr/bin/env python`
+- License key needs to be changed from `pve8p` to `pve4p`
+
+Installation with `dpkg -i` will not work. Use the following script to install manually:
+```shell
+mkdir -p /tmp/pve-fake-subscription
+dpkg-deb -x pve-fake-subscription_*.deb /tmp/pve-fake-subscription
+sed -i'' -e's/python3/python/g' -e's/pve8p/pve4p/g' /tmp/pve-fake-subscription/usr/bin/pve-fake-subscription
+mv /tmp/pve-fake-subscription/usr/bin/pve-fake-subscription /usr/local/bin/
+rm -rf /tmp/pve-fake-subscription
+ln -sf /usr/local/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
+/usr/local/bin/pve-fake-subscription
+```
+
+Removal:
+```shell
+rm -f /usr/local/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
 ```

@@ -3,15 +3,19 @@
 after_upgrade() {
     :
 
-    systemctl --system daemon-reload >/dev/null || true
-    debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
-    if ! systemctl is-enabled pve-fake-subscription.timer >/dev/null
-    then
-    : # Ensure this if-clause is not empty. If it were empty, and we had an 'else', then it is an error in shell syntax
-        systemctl preset pve-fake-subscription.timer >/dev/null || true
-        $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+    if command -v systemctl >/dev/null; then
+        systemctl --system daemon-reload >/dev/null || true
+        debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
+        if ! systemctl is-enabled pve-fake-subscription.timer >/dev/null
+        then
+        : # Ensure this if-clause is not empty. If it were empty, and we had an 'else', then it is an error in shell syntax
+            systemctl preset pve-fake-subscription.timer >/dev/null || true
+            $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+        else
+            $debsystemctl restart pve-fake-subscription.timer >/dev/null || true
+        fi
     else
-        $debsystemctl restart pve-fake-subscription.timer >/dev/null || true
+        ln -sf /usr/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
     fi
 
     pve-fake-subscription
@@ -20,10 +24,14 @@ after_upgrade() {
 after_install() {
     :
 
-    systemctl --system daemon-reload >/dev/null || true
-    debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
-    systemctl preset pve-fake-subscription.timer >/dev/null || true
-    $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+    if command -v systemctl >/dev/null; then
+        systemctl --system daemon-reload >/dev/null || true
+        debsystemctl=$(command -v deb-systemd-invoke || echo systemctl)
+        systemctl preset pve-fake-subscription.timer >/dev/null || true
+        $debsystemctl start pve-fake-subscription.timer >/dev/null || true
+    else
+        ln -sf /usr/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
+    fi
 
     pve-fake-subscription
 }

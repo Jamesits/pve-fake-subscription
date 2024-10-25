@@ -64,16 +64,13 @@ Install [nFPM](https://nfpm.goreleaser.com/install/), then:
 
 #### PVE 4.x
 
-PVE 4.x is supported with minor changes to the script.
-
 After installation or updates, run:
 ```shell
 sed -i'' -e's/pve8p/pve4p/g' /usr/bin/pve-fake-subscription
+pve-fake-subscription
 ```
 
 #### PVE 3.x
-
-PVE 3.x is supported with minor changes to the script.
 
 Installation with `dpkg -i` will not work because of missing dependencies. Use the following script to install manually:
 ```shell

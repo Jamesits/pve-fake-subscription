@@ -97,5 +97,5 @@ rm -rf /tmp/pve-fake-subscription
 
 Removal:
 ```shell
-rm -f /usr/local/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
+rm -f /usr/local/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription /etc/subscription
 ```

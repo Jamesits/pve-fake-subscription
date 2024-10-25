@@ -10,7 +10,7 @@ Disables the "No valid subscription" dialog on all Proxmox products.
 
 Works for:
 
-- Proxmox VE (5.x or later)
+- Proxmox VE (5.x or later; 3.x and 4.x [require some manual actions](#compatibility-for-old-proxmox-ve-versions))
 - Proxmox Mail Gateway (5.x or later)
 - Proxmox Backup Server (1.x or later)
 
@@ -66,26 +66,33 @@ Install [nFPM](https://nfpm.goreleaser.com/install/), then:
 
 PVE 4.x is supported with minor changes to the script.
 
-Changes needed:
-- License key needs to be changed from `pve8p` to `pve4p`
+After installation or updates, run:
+```shell
+sed -i'' -e's/pve8p/pve4p/g' /usr/bin/pve-fake-subscription
+```
 
 #### PVE 3.x
 
 PVE 3.x is supported with minor changes to the script.
 
-Changes needed:
-- The script's hashbang need to be changed from `#!/usr/bin/env python3` to `#!/usr/bin/env python`
-- License key needs to be changed from `pve8p` to `pve4p`
-
-Installation with `dpkg -i` will not work. Use the following script to install manually:
+Installation with `dpkg -i` will not work because of missing dependencies. Use the following script to install manually:
 ```shell
+# extract the deb package
 mkdir -p /tmp/pve-fake-subscription
 dpkg-deb -x pve-fake-subscription_*.deb /tmp/pve-fake-subscription
+
+# patch and install the script
 sed -i'' -e's/python3/python/g' -e's/pve8p/pve4p/g' /tmp/pve-fake-subscription/usr/bin/pve-fake-subscription
 mv /tmp/pve-fake-subscription/usr/bin/pve-fake-subscription /usr/local/bin/
-rm -rf /tmp/pve-fake-subscription
+
+# install the timer
 ln -sf /usr/local/bin/pve-fake-subscription /etc/cron.hourly/pve-fake-subscription
+
+# invoke it once
 /usr/local/bin/pve-fake-subscription
+
+# remove temporary files
+rm -rf /tmp/pve-fake-subscription
 ```
 
 Removal:

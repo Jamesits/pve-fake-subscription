@@ -6,7 +6,7 @@ version_schema: "semver"
 version_metadata: "git"
 
 epoch: 0
-release: 1
+release: 2
 section: "admin"
 priority: "optional"
 

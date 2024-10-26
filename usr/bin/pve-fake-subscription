@@ -86,7 +86,7 @@ def activate_pve_pmg(key, subscription_file, *args, **kwargs):
     with open(subscription_file, "w") as f:
         f.write(subscription)
 
-def generate_subscription_pbs(key, server_ids, product_name=ui_product_name, message=ui_message):
+def generate_subscription_pbs(key, server_ids, product_name=ui_product_name, message=ui_message, url=ui_url):
     localinfo = {
         "status": "active", # PBS: `new`, `notfound`, `active`, `invalid`
         "serverid": ",".join(server_ids),

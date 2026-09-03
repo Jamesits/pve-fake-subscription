@@ -5,12 +5,13 @@
 # If you need to prevent it checking keys against a server, please block "shop.maurer-it.com" in your hosts file
 
 from __future__ import print_function
-import hashlib
 import base64
+import hashlib
 import json
+import platform
 import time
-import re
-import sys
+# import re
+# import sys
 import os
 from datetime import datetime, timedelta
 
@@ -20,7 +21,10 @@ shared_key_data = "kjfdlskfhiuewhfk947368"
 server_key_file = "/etc/ssh/ssh_host_rsa_key.pub"
 
 # Default license keys
-lic_pve = "pve8p-1145141919"
+# https://github.com/proxmox/pve-manager/blob/c3a8ade7aceaafa4e73c4b0c4d93a1ee66db7913/PVE/API2/Subscription.pm#L46
+lic_pve = {
+    "aarch64": "pve8p-arm-1145141919",
+}.get(platform.machine(), "pve8p-1145141919")
 lic_pmg = "pmgp-1145141919"
 lic_pbs = "pbst-1145141919"
 
@@ -64,8 +68,9 @@ def generate_subscription_pve_pmg(key, server_ids, product_name=ui_product_name)
     return key + "\n" + csum + "\n" + data + "\n"
 
 # key_pattern can be find in /usr/share/perl5/{PVE,PMG}/API2/Subscription.pm
-# PVE5+: r'pve([1248])([cbsp])-[0-9a-f]{10}'
-# PVE3/4: r'pve([124])([cbsp])-[0-9a-f]{10}'
+# PVE9+: r'pve([1248])([cbsp])-(arm-)?[0-9a-f]{10}'
+# PVE5-8: r'pve([1248])([cbsp])-[0-9a-f]{10}'
+# PVE3-4: r'pve([124])([cbsp])-[0-9a-f]{10}'
 # PMG: r'pmg([cbsp])-[0-9a-f]{10}'
 def activate_pve_pmg(key, subscription_file, *args, **kwargs):
     # check if the key format is correct
